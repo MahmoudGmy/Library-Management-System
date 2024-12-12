@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Admin Dashboard</title>
+</head>
+
+<body>
+    <header>
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="books.html">Manage Books</a>
+            <a href="members.html">Manage Members</a>
+            <a href="borrows.html">Manage Borrowing</a>
+            <button onclick="logout()">Logout</button>
+        </nav>
+    </header>
+
+    <main>
+        <div id="addBookForm">
+            <h2>Add New Book</h2>
+            <form id="bookForm">
+                <input type="text" id="title" placeholder="Title" required>
+                <input type="text" id="author" placeholder="Author" required>
+                <input type="text" id="category" placeholder="Category" required>
+                <input type="number" id="count" placeholder="Book Count" required>
+                <input type="file" id="image" placeholder="Book Image">
+                <textarea id="description" placeholder="Description"></textarea>
+                <button type="submit">Add Book</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
