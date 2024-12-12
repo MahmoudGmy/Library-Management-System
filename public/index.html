@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/book-open.svg" alt="Logo"
+                class="nav-logo">
+            <span>LibraryMS</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html" class="active">Books</a>
+            <a href="members.html">Members</a>
+            <a href="borrows.html">Borrows</a>
+            <div id="authLinks">
+                <a href="login.html" class="auth-link">Login</a>
+                <a href="register.html" class="auth-link">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="header">
+            <h1>Library Books</h1>
+            <button id="addBookBtn" class="btn btn-primary">Add Book</button>
+        </div>
+
+        <div id="booksGrid" class="books-grid"></div>
+
+        <div id="addBookModal" class="modal">
+            <div class="modal-content">
+                <h2>Add New Book</h2>
+                <form id="addBookForm">
+                    <input type="text" placeholder="Title" name="title" required>
+                    <input type="text" placeholder="Author" name="author" required>
+                    <input type="number" placeholder="Count" name="count" required>
+                    <input type="text" placeholder="Category" name="category" required>
+                    <textarea placeholder="Description" name="description" required></textarea>
+                    <input type="text" placeholder="Image URL" name="image" required>
+                    <div class="form-buttons">
+                        <button type="button" class="btn btn-secondary" id="cancelAddBook">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Book</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/books.js"></script>
+</body>
+
+</html>
