@@ -8,7 +8,7 @@ let books = [
         category: "Learning",
         description_of_book: "study object oriantle programming with eazy",
         image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3"
-    }
+    }, 
 ];
 
 // Display books

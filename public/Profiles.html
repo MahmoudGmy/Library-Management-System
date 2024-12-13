@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - LibraryMS</title>
+    <link rel="stylesheet" href="css/Profiles.css">
+</head>
+
+<body>
+
+        <nav class="navbar">
+            <div class="nav-brand">
+                <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/book-open.svg" alt="Logo"
+                    class="nav-logo">
+                <span>LibraryMS</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="active">Books</a>
+                <a href="Profiles.html">Profile</a>
+                <a href="borrows.html">Borrows</a>
+                <div id="authLinks">
+                    <a href="login.html" class="auth-link">Login</a>
+                    <a href="register.html" class="auth-link">Register</a>
+                </div>
+            </div>
+        </nav>
+
+    <main>
+        <section class="profile">
+            <h1>User Profile</h1>
+            <div class="profile-card">
+                <img src="https://via.placeholder.com/150" alt="User Avatar" class="avatar">
+                <div class="info">
+                    <p><strong>Name:</strong> John Doe</p>
+                    <p><strong>Email:</strong> john.doe@example.com</p>
+                    <p><strong>Borrowed Books:</strong> 5</p>
+                </div>
+            </div>
+
+            <h2>Edit Profile</h2>
+            <form id="edit-profile-form">
+                <label>
+                    Name:
+                    <input type="text" id="name" value="John Doe">
+                </label>
+                <label>
+                    Email:
+                    <input type="email" id="email" value="john.doe@example.com">
+                </label>
+                <label>
+                    Avatar URL:
+                    <input type="url" id="avatar" value="https://via.placeholder.com/150">
+                </label>
+                <button type="submit">Save Changes</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="js/Profiles.js"></script>
+</body>
+
+</html>
