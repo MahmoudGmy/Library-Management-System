@@ -1,0 +1,56 @@
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1,
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th,
+table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background-color: #f4f4f4;
+}
+
+button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button.delete {
+    background-color: #e74c3c;
+    color: #fff;
+}
+
+button.extend {
+    background-color: #3498db;
+    color: #fff;
+}
+
+button.delete:hover {
+    background-color: #c0392b;
+}
+
+button.extend:hover {
+    background-color: #2980b9;
+}
