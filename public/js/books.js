@@ -1,72 +1,103 @@
-// Sample books data
-let books = [
-    {
-        id: 1,
-        title: "OOP",
-        count: "70",
-        author: "Elzeroo",
-        category: "Learning",
-        description_of_book: "study object oriantle programming with eazy",
-        image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3"
-    }, 
-];
+let Books = [];
+const token = localStorage.getItem('token');
+const User = JSON.parse(localStorage.getItem('user')); 
+const isAdmin = User && User.role === "Admin";
 
-// Display books
+async function fetchBooks() {
+    try {
+        const response = await fetch(`http://localhost:8080/api/books`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.status === "success") {
+            Books = Array.isArray(data.data) ? data.data : []; 
+            displayBooks();
+        } else {
+            console.error("Failed to fetch books:", data.message);
+            alert("Unable to load books. Please try again.");
+        }
+    } catch (error) {
+        console.error("Error fetching books:", error);
+        alert("An error occurred while loading books.");
+    }
+}
+
 function displayBooks() {
     const booksGrid = document.getElementById('booksGrid');
     if (!booksGrid) return;
 
-    booksGrid.innerHTML = books.map(book => `
+ 
+    if (!Array.isArray(Books)) {
+        console.error("Books is not an array:", Books);
+        return;
+    }
+
+    booksGrid.innerHTML = Books.map(book => `
         <div class="book-card">
-            <img src="${book.image}" alt="${book.title}" class="book-image">
+    
+            <img src="../imag/images.png" alt="${book.title}" class="book-image">
             <div class="book-info">
+
                 <h3 class="book-title">${book.title}</h3>
+               
                 <p class="book-author">By ${book.author}</p>
                 <p class="book-category">Category: ${book.category}</p>
                 <p class="book-description">${book.description_of_book}</p>
                 <div class="book-footer">
-                    <span>Available: ${book.count}</span>
-                    <button class="btn btn-primary" onclick="borrowBook(${book.id})">Borrow</button>
+                    <button class="borrow-btn" onclick="borrowBook('${book.book_id}')">Borrow</button>
+                      ${isAdmin ? `<button class="delete-btn" onclick="deleteBook('${book.book_id}')">Delete</button>` : ''}
                 </div>
             </div>
         </div>
     `).join('');
 }
 
-// Handle add book modal
-function setupAddBookModal() {
-    const modal = document.getElementById('addBookModal');
-    const addBtn = document.getElementById('addBookBtn');
-    const cancelBtn = document.getElementById('cancelAddBook');
-    const form = document.getElementById('addBookForm');
 
-    if (!modal || !addBtn || !cancelBtn || !form) return;
+async function borrowBook(bookId) {
+    if (!token) {
+        alert("You need to be logged in to borrow a book.");
+        return;
+    }
 
-    addBtn.onclick = () => modal.style.display = "flex";
-    cancelBtn.onclick = () => modal.style.display = "none";
+    const user = JSON.parse(localStorage.getItem('user'));
+    const memberId = user ? user.id : null;
 
-    form.onsubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const newBook = {
-            id: books.length + 1,
-            title: formData.get('title'),
-            count: formData.get('count'),
-            author: formData.get('author'),
-            category: formData.get('category'),
-            description_of_book: formData.get('description'),
-            image: formData.get('image')
-        };
+    if (!memberId) {
+        alert("User ID not found.");
+        return;
+    }
 
-        books.push(newBook);
-        displayBooks();
-        modal.style.display = "none";
-        form.reset();
-    };
+    try {
+        const response = await fetch(`http://localhost:8080/api/books/borrowBook/${bookId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authentication': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                member_id: memberId,  
+                book_id: bookId
+            })
+        });
+        console.log("Borrowing book with:", { memberId, bookId });
+
+        const data = await response.json();
+console.log(data)
+        if (response.ok && data.status === 'success') {
+            alert(`Successfully borrowed the book: ${data.data.book_title}`);
+        } else {
+            alert(data.message || 'Failed to borrow the book.');
+        }
+    } catch (error) {
+        console.error('Error borrowing book:', error);
+        alert('An error occurred while borrowing the book.');
+    }
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    displayBooks();
-    setupAddBookModal();
-});
+
+document.addEventListener("DOMContentLoaded", fetchBooks);

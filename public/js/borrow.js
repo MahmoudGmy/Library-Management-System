@@ -1,31 +1,56 @@
-// Select all minus buttons
-document.querySelectorAll('.minus-btn').forEach((button) => {
-    button.addEventListener('click', function () {
-        const bookCard = this.closest('.book-card');
-        const availableCountElem = bookCard.querySelector('.available-count');
-        let availableCount = parseInt(availableCountElem.textContent);
+document.addEventListener('DOMContentLoaded', async function () {
+    const borrowedBooksList = document.getElementById('borrowedBooksList');
 
-        if (availableCount > 0) {
-            availableCount -= 1;
-            availableCountElem.textContent = availableCount;
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+        borrowedBooksList.innerHTML = '<p>User not logged in or userId not found.</p>';
+        return;
+    }
 
-            if (availableCount === 0) {
-                alert('No more copies available.');
+    try {
+
+        const response = await fetch(`/api/auth/${user.id}/getAllborrowedBooks`, {
+            headers: {
+                'Authentication': `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'application/json',
+            },
+            
+           
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+
+            if (data.status === 'success') {
+
+                const books = Array.isArray(data.data) ? data.data : [data.data];
+                console.log(books)
+
+                books.forEach(book => {
+                    console.log(book)
+                    const bookItem = document.createElement('div');
+                    bookItem.classList.add('book-item');
+                    bookItem.innerHTML = `
+                        <h3>${book.title}</h3>
+                        
+                        <img src="../imag/database.png">
+                        <p><strong>Author:</strong> ${book.author}</p>
+                        <p><strong>Borrowed On:</strong> ${book.borrow_date}</p>
+                        <p><strong>Due Date:</strong> ${book.return_date}</p>
+                    `;
+                    borrowedBooksList.appendChild(bookItem);
+                });
+            } else {
+
+                borrowedBooksList.innerHTML = '<p>You have not borrowed any books yet.</p>';
             }
         } else {
-            alert('This book is already out of stock!');
+
+            console.error('Failed to fetch data from backend');
+            borrowedBooksList.innerHTML = '<p>Error fetching borrowed books. Please try again later.</p>';
         }
-    });
-});
-
-// Select all plus buttons
-document.querySelectorAll('.plus-btn').forEach((button) => {
-    button.addEventListener('click', function () {
-        const bookCard = this.closest('.book-card');
-        const availableCountElem = bookCard.querySelector('.available-count');
-        let availableCount = parseInt(availableCountElem.textContent);
-
-        availableCount += 1;
-        availableCountElem.textContent = availableCount;
-    });
+    } catch (error) {
+        console.error('Error:', error);
+        borrowedBooksList.innerHTML = '<p>Error fetching borrowed books. Please try again later.</p>';
+    }
 });
