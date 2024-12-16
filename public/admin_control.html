@@ -17,12 +17,8 @@
             <span>LibraryMS</span>
         </div>
         <div class="nav-links">
-            <!-- <a href="index.html" class="active">CONTROL</a> -->
-            <!-- <a href="Profiles.html">Profile</a> -->
-            <!-- <a href="borrows.html">Borrows</a> -->
             <div id="authLinks">
-                <!-- <a href="login.html" class="auth-link">Login</a>
-                <a href="register.html" class="auth-link">Register</a> -->
+                <!-- Dynamically rendered auth links (login, logout, etc.) -->
             </div>
         </div>
     </nav>
@@ -33,7 +29,9 @@
             <button id="addBookBtn" class="btn btn-primary">Add Book</button>
         </div>
 
-        <div id="booksGrid" class="books-grid"></div>
+        <div id="booksGrid" class="books-grid">
+            <!-- Books will be dynamically inserted here by JavaScript -->
+        </div>
 
         <div id="addBookModal" class="modal">
             <div class="modal-content">
@@ -44,7 +42,7 @@
                     <input type="number" placeholder="Count" name="count" required>
                     <input type="text" placeholder="Category" name="category" required>
                     <textarea placeholder="Description" name="description" required></textarea>
-                    <input type="text" placeholder="Image URL" name="image" required>
+                    <input type="text" placeholder="Image URL" name="image" >
                     <div class="form-buttons">
                         <button type="button" class="btn btn-secondary" id="cancelAddBook">Cancel</button>
                         <button type="submit" class="btn btn-primary">Add Book</button>
@@ -56,6 +54,11 @@
 
     <script src="js/auth.js"></script>
     <script src="js/books.js"></script>
+
+    <script src="js/admin.js">
+        
+
+    </script>
 </body>
 
 </html>

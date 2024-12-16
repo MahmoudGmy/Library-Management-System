@@ -11,8 +11,7 @@
 <body>
     <nav class="navbar">
         <div class="nav-brand">
-            <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/book-open.svg" alt="Logo"
-                class="nav-logo">
+            <img src="https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/book-open.svg" alt="Logo" class="nav-logo">
             <span>LibraryMS</span>
         </div>
         <div class="nav-links">
@@ -20,35 +19,19 @@
             <a href="Profiles.html">Profile</a>
             <a href="borrows.html">Borrows</a>
             <div id="authLinks">
-                <a href="login.html" class="auth-link">Login</a>
-                <a href="register.html" class="auth-link">Register</a>
+                <!-- <a href="login.html" class="auth-link">Login</a>
+                <a href="register.html" class="auth-link">Register</a> -->
             </div>
         </div>
     </nav>
-
+    <h2>Your Borrowed Books</h2>
     <div class="books-container">
-        <div class="book-card">
-            <img src="book-image-url.jpg" alt="Book Image">
-            <h3>OOP</h3>
-            <p>By Elzeroo</p>
-            <p>Category: Learning</p>
-            <p>Study object-oriented programming with ease</p>
-            <p>Available: <span class="available-count">70</span></p>
-            <button class="minus-btn">-</button>
-            <button class="plus-btn">+</button>
-        </div>
-        <div class="book-card">
-            <img src="book-image-url.jpg" alt="Book Image">
-            <h3>OOP</h3>
-            <p>By Elzeroo</p>
-            <p>Category: Learning</p>
-            <p>Study object-oriented programming with ease</p>
-            <p>Available: <span class="available-count">70</span></p>
-            <button class="minus-btn">-</button>
-            <button class="plus-btn">+</button>
+       
+        <br>
+        <div id="borrowedBooksList">
+            <!-- Dynamically populated books will appear here -->
         </div>
     </div>
-    
 
     <script src="js/borrow.js"></script>
 </body>
