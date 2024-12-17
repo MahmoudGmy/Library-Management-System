@@ -165,7 +165,7 @@ body {
         max-width: 400px;
     }
 }
-#returnbtn{
+.return-btn{
     background: linear-gradient(90deg, #4a44be, #4f46e5);
         color: white;
         font-size: 16px;
@@ -181,11 +181,11 @@ body {
         
         transition: background 0.3s, transform 0.2s;
 }
-#returnbtn:hover{
+.return-btn:hover{
     background: linear-gradient(90deg, #4a44be, #4f46e5);
         transform: scale(1.05);
 }
-#returnbtn:active {
+.return-btn:active {
     transform: scale(0.98);
     background: linear-gradient(90deg, #4a44be, #4f46e5);
 }

@@ -208,12 +208,12 @@ const returnBook = async (req, res) => {
 
         const newCount = currentCount + 1;
 
-        await connection.promise().query(
+        await connection.query(
             'UPDATE book SET count = ? WHERE book_id = ?',
             [newCount, bookId]
         );
 
-        const [deleteResult] = await connection.promise().query(
+        const [deleteResult] = await connection.query(
             'DELETE FROM borrow WHERE book_id = ? AND member_id = ?',
             [bookId, memberId]
         );
