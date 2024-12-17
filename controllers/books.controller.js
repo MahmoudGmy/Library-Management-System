@@ -1,5 +1,5 @@
 
-const { getallbooks, getonebook, addNewBook, deleteBook,borrow } = require('../models/books');
+const { getallbooks, getonebook, addNewBook, deleteBook,borrow,returnBook } = require('../models/books');
 const Status = require('../utils/Status')
 
 const getBooks = async (req, res) => {
@@ -68,7 +68,6 @@ const DeleteBook = async function (req, res) {
 const borrowBook = async (req, res) => {
     try {
         const borrowBookData = await borrow(req);
-       
         res.status(201).json({
             status: Status.SUCCESS,
             message: 'Book borrowed successfully',
@@ -81,11 +80,21 @@ const borrowBook = async (req, res) => {
 };
 
 
-const returnBook = async()=>{
+const ReturnBook = async (req, res) => {
+        try {
+        const result = await returnBook(req);
 
+        if (result) {
+            res.json({ status: Status.SUCCESS, data: null });
+        } else {
+            res.json({ status: Status.FAIL, data: result.message });
+        }
+    } catch (e) {
+        
+        res.status(500).json({ status: Status.ERROR, message: e.message });
+    }
+};
 
-
-}
 module.exports = {
     getBooks,
     getBookById,
