@@ -1,3 +1,4 @@
+const { query } = require('express');
 const connection = require('../config/db')
 
 
@@ -168,44 +169,19 @@ const borrow = async (req) => {
     // }
 };
 
-//return book
-const returnBook = async (req) => {
-    const bookId = req.params.Id;
 
-    try {
-        // Step 1: Fetch the current count for the book
-        const [rows] = await connection.query(
-            'SELECT count FROM book WHERE book_id = ?',
-            [bookId]
-        );
 
-        // Check if the book exists
-        if (rows.length === 0) {
-            console.log('Book not found');
-            return false;
-        }
 
-        let currentCount = rows[0].count;
 
-        const newCount = currentCount + 1;
 
-        await connection.query(
-            'UPDATE book SET count = ? WHERE book_id = ?',
-            [newCount, bookId]
-        );
 
-        console.log(`Book ID ${bookId} count updated to ${newCount}`);
-        return true;
 
-    } catch (e) {
-        console.error("Cannot return Book", { e });
-        return null;
-    }
-};
+
+
 
 
 module.exports = {
     getallbooks,
     getonebook, addNewBook, deleteBook,
-    borrow,returnBook
+    borrow
 }
