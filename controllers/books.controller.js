@@ -101,5 +101,5 @@ module.exports = {
     addBook,
     DeleteBook,
     borrowBook,
-    returnBook
+    ReturnBook
 };
