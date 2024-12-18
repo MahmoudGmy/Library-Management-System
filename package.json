@@ -15,6 +15,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "library-management-system": "file:",
     "mysql2": "^3.11.5",
     "nodemon": "^3.1.9",
     "sequelize": "^6.37.5"
