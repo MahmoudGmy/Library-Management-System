@@ -1,3 +1,4 @@
+const { query } = require('express');
 const connection = require('../config/db')
 
 
@@ -168,40 +169,21 @@ const borrow = async (req) => {
     // }
 };
 
-//delete boofrom borrow 
-const deleteBorrowBook = async (req) => {
+//return book
+const returnBook = async (req) => {
     const bookId = req.params.Id;
 
     try {
-        const deletedBook =await connection.query(
-            `delete from book where book_id=?`, [bookId]
-        )
-
-        return true;
-    }
-    catch (e) {
-        console.error("Cannot delete Book", { e });
-        return null;
-    }
-    
-}
-//return book
-const returnBook = async (req, res) => {
-    const bookId = req.params.Id; 
-    const { memberId } = req.body; 
-
-    if (!memberId) {
-        return res.status(400).json({ message: "Member ID is required" });
-    }
-
-    try {
+        // Step 1: Fetch the current count for the book
         const [rows] = await connection.query(
             'SELECT count FROM book WHERE book_id = ?',
             [bookId]
         );
 
+        // Check if the book exists
         if (rows.length === 0) {
-            return res.status(404).json({ message: "Book not found" });
+            console.log('Book not found');
+            return false;
         }
 
         let currentCount = rows[0].count;
@@ -213,31 +195,18 @@ const returnBook = async (req, res) => {
             [newCount, bookId]
         );
 
-        const [deleteResult] = await connection.query(
-            'DELETE FROM borrow WHERE book_id = ? AND member_id = ?',
-            [bookId, memberId]
-        );
+        console.log(`Book ID ${bookId} count updated to ${newCount}`);
+        return true;
 
-        if (deleteResult.affectedRows === 0) {
-            return res.status(404).json({ message: "No borrow record found for this member and book" });
-        }
-
-        console.log(`Book ID ${bookId} count updated to ${newCount} and borrow record deleted for member ${memberId}`);
-        res.status(200).json({
-            message: "Book returned successfully!",
-            newCount: newCount
-        });
-
-    } catch (error) {
-        console.error("Error returning book:", error);
-        res.status(500).json({ message: "Failed to return the book" });
+    } catch (e) {
+        console.error("Cannot return Book", { e });
+        return null;
     }
 };
-
 
 
 module.exports = {
     getallbooks,
     getonebook, addNewBook, deleteBook,
-    borrow,returnBook
+    borrow
 }

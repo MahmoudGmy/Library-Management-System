@@ -16,10 +16,8 @@ router.route('/')
 router.route('/:Id')
     .get(bookController.getBookById)
     .delete(verifyToken, allowTO("Admin"), bookController.DeleteBook)
-
-router.route('/return/:Id')
     .get(bookController.getBookById)
-    .put(verifyToken, bookController.ReturnBook)
+    // .put(verifyToken, bookController.ReturnBook)
 
 
 

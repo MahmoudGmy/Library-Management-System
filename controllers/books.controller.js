@@ -80,26 +80,17 @@ const borrowBook = async (req, res) => {
 };
 
 
-const ReturnBook = async (req, res) => {
-        try {
-        const result = await returnBook(req);
-
-        if (result) {
-            res.json({ status: Status.SUCCESS, data: null });
-        } else {
-            res.json({ status: Status.FAIL, data: result.message });
-        }
-    } catch (e) {
-        
-        res.status(500).json({ status: Status.ERROR, message: e.message });
-    }
-};
 
 module.exports = {
     getBooks,
     getBookById,
     addBook,
     DeleteBook,
+
     borrowBook,
-    ReturnBook
+    ReturnBook,
+
+    borrowBook
+    // ReturnBook
+
 };
