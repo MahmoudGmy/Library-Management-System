@@ -1,88 +1,93 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const members = require("../models/members");
+const Status = require("../utils/Status");
+const generateToken = require("../utils/generateJWT");
 
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken');
-const members = require('../models/members');
-const Status = require('../utils/Status');
-const generateToken = require('../utils/generateJWT')
-
-
-const JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET;
 const login = async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    try {
-        const member = await members.getMember(email);
-        if (!member) {
-            return res.status(404).json({ status: Status.FAIL, message: "You don't have an account" });
-        }
-
-        // Compare password
-        const checkPassword = await bcrypt.compare(password, member.password_hash);
-
-        if (!checkPassword) {
-            return res.status(401).json({ status: Status.ERROR, message: "Your password or email is not correct" });
-        }
-
-
-        const token = generateToken({ id: member.member_id, email: member.email, role: member.role_user });
-        // console.log(token);
-        res.status(200).json({ status: Status.SUCCESS, data: { member, token } });
-    } catch (e) {
-
-        res.status(500).json({ status: Status.ERROR, message: e.message });
+  try {
+    const member = await members.getMember(email);
+    if (!member) {
+      return res
+        .status(404)
+        .json({ status: Status.FAIL, message: "You don't have an account" });
     }
+
+    // Compare password
+    const checkPassword = await bcrypt.compare(password, member.password_hash);
+
+    if (!checkPassword) {
+      return res.status(401).json({
+        status: Status.ERROR,
+        message: "Your password or email is not correct",
+      });
+    }
+
+    const token = generateToken({
+      id: member.member_id,
+      email: member.email,
+      role: member.role_user,
+    });
+    // console.log(token);
+    res.status(200).json({ status: Status.SUCCESS, data: { member, token } });
+  } catch (e) {
+    res.status(500).json({ status: Status.ERROR, message: e.message });
+  }
 };
 
 const signup = async (req, res) => {
-    try {
-        const newMember = await members.addMember(req);
+  try {
+    const newMember = await members.addMember(req);
 
-
-        if (!newMember || !newMember.insertId) {
-            return res.status(500).json({ status: Status.ERROR, message: 'Error inserting new member' });
-        }
-
-
-        const memberDetails = await members.getMemberById(newMember.insertId);
-
-
-        if (!memberDetails) {
-            return res.status(404).json({ status: Status.FAIL, message: 'Member not found' });
-        }
-
-        const payload = {
-            id: memberDetails.member_id,
-            email: memberDetails.email,
-            role: memberDetails.role_user
-        };
-
-
-        const token = generateToken(payload);
-
-        if (!token) {
-            return res.status(500).json({ status: Status.ERROR, message: 'Token generation failed' });
-        }
-
-        res.status(201).json({
-            status: 'SUCCESS',
-            data: {
-                newMember: {
-                    id: memberDetails.member_id,
-                    name: memberDetails.name_member,
-                    email: memberDetails.email,
-                    role: memberDetails.role_user,
-                    address: memberDetails.address,
-                    phone: memberDetails.phone
-                },
-                token
-            }
-        });
-    } catch (e) {
-
-        res.status(500).json({ status: Status.ERROR, message: e.message });
+    if (!newMember || !newMember.insertId) {
+      return res
+        .status(500)
+        .json({ status: Status.ERROR, message: "Error inserting new member" });
     }
-};
 
+    const memberDetails = await members.getMemberById(newMember.insertId);
+
+    if (!memberDetails) {
+      return res
+        .status(404)
+        .json({ status: Status.FAIL, message: "Member not found" });
+    }
+
+    const payload = {
+      id: memberDetails.member_id,
+      email: memberDetails.email,
+      role: memberDetails.role_user,
+    };
+
+    const token = generateToken(payload);
+
+    if (!token) {
+      return res
+        .status(500)
+        .json({ status: Status.ERROR, message: "Token generation failed" });
+    }
+
+    res.status(201).json({
+      status: "SUCCESS",
+      data: {
+        newMember: {
+          id: memberDetails.member_id,
+          name: memberDetails.name_member,
+          email: memberDetails.email,
+          role: memberDetails.role_user,
+          address: memberDetails.address,
+          phone: memberDetails.phone,
+        },
+        token,
+      },
+    });
+  } catch (e) {
+    res.status(500).json({ status: Status.ERROR, message: e.message });
+  }
+};
 
 // const blacklist = new Set();
 
@@ -110,108 +115,100 @@ const signup = async (req, res) => {
 //     next();
 // };
 
-
-
 const deleteUser = async (req, res) => {
-    try {
+  try {
+    const email = req.body.email;
 
-        const email = req.body.email;
+    await members.deletemember(email);
 
-         await members.deletemember(email);
+    // if (result.affectedRows === 0) {
 
-        // if (result.affectedRows === 0) {
+    //     return res.status(404).json({ status: Status.FAIL, message: "User not found" });
+    // }
 
-        //     return res.status(404).json({ status: Status.FAIL, message: "User not found" });
-        // }
-
-
-        res.status(200).json({ status: Status.SUCCESS, message: "User deleted successfully" });
-    } catch (e) {
-        res.status(500).json({ status: Status.ERROR, message: e.message });
-    }
+    res
+      .status(200)
+      .json({ status: Status.SUCCESS, message: "User deleted successfully" });
+  } catch (e) {
+    res.status(500).json({ status: Status.ERROR, message: e.message });
+  }
 };
 
 const getAllMember = async (req, res) => {
-    try {
-
-        const Members = await members.getAll();
-        if (!Members || Members.length === 0) {
-            return res.status(404).json({
-                status: "FAIL",
-                message: "No members found",
-            });
-        }
-
-        res.status(200).json({
-            status: Status.SUCCESS,
-            data: Members,
-        });
-    } catch (e) {
-
-        res.status(500).json({
-            status: Status.ERROR,
-            message: "An error occurred while retrieving members",
-        });
+  try {
+    const Members = await members.getAll();
+    if (!Members || Members.length === 0) {
+      return res.status(404).json({
+        status: "FAIL",
+        message: "No members found",
+      });
     }
+
+    res.status(200).json({
+      status: Status.SUCCESS,
+      data: Members,
+    });
+  } catch (e) {
+    res.status(500).json({
+      status: Status.ERROR,
+      message: "An error occurred while retrieving members",
+    });
+  }
 };
-
-
 
 const getBorrowedBooksCount = async (req, res) => {
-    try {
-        const borrowBookData = await members.getBorrow(req);
-        res.status(201).json({
-            status: Status.SUCCESS,
-            message: 'Book borrowed successfully',
-            data: {
-                count: borrowBookData.count
-            }
-        });
-    } catch (e) {
-        res.status(500).json({ status: Status.FAIL, message: 'Failed to borrow book' });
-    }
+  try {
+    const borrowBookData = await members.getBorrow(req);
+    res.status(201).json({
+      status: Status.SUCCESS,
+      message: "Book borrowed successfully",
+      data: {
+        count: borrowBookData.count,
+      },
+    });
+  } catch (e) {
+    res
+      .status(500)
+      .json({ status: Status.FAIL, message: "Failed to borrow book" });
+  }
 };
 
-
-
 const getAllborrowedBooks = async (req, res) => {
-    try {
-        const result = await members.getAllborrowed(req);
+  try {
+    const result = await members.getAllborrowed(req);
 
-        res.status(200).json({
-            status: Status.SUCCESS,
-            data: result
-        })
-
-    } catch (e) {
-
-        res.status(500).json({ status: Status.FAIL, message: 'Failed to borrow book' });
-    }
-}
-
+    res.status(200).json({
+      status: Status.SUCCESS,
+      data: result,
+    });
+  } catch (e) {
+    res
+      .status(500)
+      .json({ status: Status.FAIL, message: "Failed to borrow book" });
+  }
+};
 
 const ReturnBook = async (req, res) => {
-    try {
+  try {
     const result = await members.returnBook(req);
 
     if (result) {
-        res.json({ status: Status.SUCCESS, data: null });
+      res.json({ status: Status.SUCCESS, data: null });
     } else {
-        res.json({ status: Status.FAIL, data: result.message });
+      res.json({ status: Status.FAIL, data: result.message });
     }
-} catch (e) {
-    
+  } catch (e) {
     res.status(500).json({ status: Status.ERROR, message: e.message });
-}
+  }
 };
 
-
 module.exports = {
-    signup,
-    login,
-    // logout,
-    deleteUser,
-    getAllMember,
-    getBorrowedBooksCount,
-    getAllborrowedBooks,ReturnBook
+  signup,
+  login,
+  // logout,
+  deleteUser,
+  getAllMember,
+  getBorrowedBooksCount,
+  getAllborrowedBooks,
+  ReturnBook,
 };

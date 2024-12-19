@@ -57,46 +57,50 @@ function displayBooks() {
     `).join('');
 }
 
-
 async function borrowBook(bookId) {
-    if (!token) {
-        alert("You need to be logged in to borrow a book.");
-        return;
+  const token = localStorage.getItem("token"); // Ensure token is correctly fetched
+
+  if (!token) {
+    alert("You need to be logged in to borrow a book.");
+    return;
+  }
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const memberId = user ? user.id : null;
+
+  if (!memberId) {
+    alert("User ID not found.");
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/books/borrowBook/${bookId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authentication: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          member_id: memberId,
+          book_id: bookId,
+        }),
+      }
+    );
+
+    const data = await response.json();
+    console.log(data);
+
+    if (response.ok && data.status === "success") {
+      alert(`Successfully borrowed the book: ${data.book_title}`);
+    } else {
+      alert(data.message || "Failed to borrow the book.");
     }
-
-    const user = JSON.parse(localStorage.getItem('user'));
-    const memberId = user ? user.id : null;
-
-    if (!memberId) {
-        alert("User ID not found.");
-        return;
-    }
-
-    try {
-        const response = await fetch(`http://localhost:8080/api/books/borrowBook/${bookId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authentication': `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-                member_id: memberId,  
-                book_id: bookId
-            })
-        });
-        console.log("Borrowing book with:", { memberId, bookId });
-
-        const data = await response.json();
-console.log(data)
-        if (response.ok && data.status === 'success') {
-            alert(`Successfully borrowed the book: ${data.data.book_title}`);
-        } else {
-            alert(data.message || 'Failed to borrow the book.');
-        }
-    } catch (error) {
-        console.error('Error borrowing book:', error);
-        alert('An error occurred while borrowing the book.');
-    }
+  } catch (error) {
+    console.error("Error borrowing book:", error);
+    alert("An error occurred while borrowing the book.");
+  }
 }
 
 

@@ -4,6 +4,7 @@ const memberController = require('../controllers/member.controller')
 
 const allowTO = require('../middliewares/allowTO')
 const verifyToken = require('../middliewares/veryfiyToken')
+const { route } = require('./books.route')
 
 
 
@@ -33,5 +34,7 @@ router.route('/Users')
     .get(verifyToken, allowTO("Admin"), memberController.getAllMember)
 
 
+// add fines to member allow to admin 
+router.route("/addFines").post(verifyToken, allowTO("Admin"), memberController.addFines)
 
 module.exports = router;
