@@ -53,8 +53,18 @@ const getMemberById = async (id) => {
 
 const deletemember = async (email) => {
     try {
-        const [result] = await connection.query('DELETE FROM members WHERE  email = ?', [email]);
-        return result;
+//         -- Step 1: Delete all records in the 'borrow' table related to the member
+// DELETE FROM borrow WHERE member_id = (SELECT member_id FROM members WHERE email = 'mahmoufd@gmail.com');
+
+// -- Step 2: Delete the member from the 'members' table
+// DELETE FROM members WHERE email = 'mahmoufd@gmail.com';
+
+       await connection.query('DELETE FROM borrow WHERE member_id = (SELECT member_id FROM members WHERE email = ?)', [email]);
+
+  // Delete the member from the 'members' table
+  await connection.query('DELETE FROM members WHERE email = ?', [email]);
+
+        // return result;
     } catch (e) {
         console.error("Error deleting member:", e);
         throw e;

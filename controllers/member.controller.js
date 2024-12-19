@@ -117,12 +117,12 @@ const deleteUser = async (req, res) => {
 
         const email = req.body.email;
 
-        const result = await members.deletemember(email);
+         await members.deletemember(email);
 
-        if (result.affectedRows === 0) {
+        // if (result.affectedRows === 0) {
 
-            return res.status(404).json({ status: Status.FAIL, message: "User not found" });
-        }
+        //     return res.status(404).json({ status: Status.FAIL, message: "User not found" });
+        // }
 
 
         res.status(200).json({ status: Status.SUCCESS, message: "User deleted successfully" });
