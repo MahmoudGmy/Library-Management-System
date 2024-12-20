@@ -113,7 +113,7 @@ const borrow = async (req, res) => {
 
     // Proceed with borrowing the book
     const [result] = await connection.query(
-      `INSERT INTO borrow (member_id, book_id, fines_id, borrow_date, return_date) 
+      `INSERT INTO borrow (member_id, book_id, fines_value, borrow_date, return_date) 
             VALUES (?, ?, ?, ?, ?)`,
       [
         member_id,

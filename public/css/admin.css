@@ -42,7 +42,7 @@ button.delete {
     color: #fff;
 }
 
-button.extend {
+button.addfines {
     background-color: #3498db;
     color: #fff;
 }
@@ -51,6 +51,6 @@ button.delete:hover {
     background-color: #c0392b;
 }
 
-button.extend:hover {
+button.addfines:hover {
     background-color: #2980b9;
 }

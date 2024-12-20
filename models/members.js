@@ -91,7 +91,7 @@ const getAllborrowed = async (req) => {
   try {
     const [result] = await connection.query(
       `
-            SELECT book.book_id ,book.title, book.author,book.image, borrow.borrow_date, borrow.return_date 
+            SELECT book.book_id ,book.title, book.author,book.image, borrow.borrow_date, borrow.return_date , borrow.fines_value
             FROM borrow
             INNER JOIN book ON borrow.book_id = book.book_id
             WHERE borrow.member_id = ? AND borrow.return_date IS NOT NULL
@@ -170,23 +170,66 @@ const returnBook = async (req) => {
   }
 };
 
-
-
-
+// Add fines to a user and book
 // const addfine = async (req) => {
-//     const fine_amount = req.body;
-//     const userId = require.params;
-//     try {
-//         const [result] = await connection.query(
-//           `INSERT INTO fines (price) VALUES (?) where member_id = ?`,[fine_amount,userId]
-//         );
-//         return result;
-        
-//     } catch (e) {
-//         console.log("error=> ", e)
-//         throw e;
+//   const { fine_amount } = req.body; // Fine amount from the body
+//   const { userId, book_id } = req.params; // UserId and book_id from the URL params
+
+//   console.log("Fine Amount:", fine_amount);
+//   console.log("User ID:", userId);
+//   console.log("Book ID:", book_id);
+
+//   try {
+//     const [result] = await connection.query(
+//       `UPDATE borrow SET fines_value = ? WHERE member_id = ? AND book_id = ?`,
+//       [fine_amount, userId, book_id] // Binding the values to the query
+//     );
+
+//     if (result.affectedRows > 0) {
+//       return true; // Return true if the update is successful
+//     } else {
+//       return false; // No rows affected, so return false
 //     }
-// }
+//   } catch (e) {
+//     console.log("Error:", e);
+//     throw e; // Throw the error if something goes wrong
+//   }
+// };
+
+const addfine = async (req) => {
+  const { fine_amount } = req.body; // Fine amount from the body
+  const { member_id, book_id } = req.params; // UserId and book_id from the URL params
+
+  console.log("Fine Amount:", fine_amount);
+  console.log("Member ID:", member_id);
+  console.log("Book ID:", book_id);
+
+  try {
+    const [result] = await connection.query(
+      `UPDATE borrow SET fines_value = ? WHERE member_id = ? AND book_id = ?`,
+      [fine_amount, member_id, book_id] // Binding the values to the query
+    );
+
+    if (result.affectedRows > 0) {
+      const [updatedUser] = await connection.query(
+        `SELECT fines_value FROM borrow WHERE member_id = ? AND book_id = ?`,
+        [member_id, book_id]
+      );
+      return updatedUser[0]; // Return true if the update is successful
+    } else {
+      return false; // No rows affected, so return false
+    }
+  } catch (e) {
+    console.log("Error:", e);
+    throw e; // Throw the error if something goes wrong
+  }
+};
+
+module.exports = {
+  addfine,
+};
+//======================================================================================================
+
 module.exports = {
   addMember,
   getMember,
@@ -196,4 +239,5 @@ module.exports = {
   getBorrow,
   getAllborrowed,
   returnBook,
+  addfine,
 };

@@ -40,7 +40,7 @@ function displayBooks() {
     booksGrid.innerHTML = Books.map(book => `
         <div class="book-card">
     
-            <img src="../imag/images.png" alt="${book.title}" class="book-image">
+            <img src="../imag/${book.image}" alt="${book.title}" class="book-image">
             <div class="book-info">
 
                 <h3 class="book-title">${book.title}</h3>

@@ -35,6 +35,10 @@ router.route('/Users')
 
 
 // add fines to member allow to admin 
-router.route("/addFines").post(verifyToken, allowTO("Admin"), memberController.addFines)
+// Router for adding fines to a user and book
+router
+  .route("/user/:member_id/book/:book_id/addFines")
+  .get(memberController.getAllborrowedBooks)
+  .post(verifyToken, allowTO("Admin"), memberController.addFines);
 
 module.exports = router;

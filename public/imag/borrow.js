@@ -36,15 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         <p><strong>Author:</strong> ${book.author}</p>
                         <p><strong>Borrowed On:</strong> ${book.borrow_date}</p>
                         <p><strong>Due Date:</strong> ${book.return_date}</p>
-                        ${
-                          book.fines_value == null
-                            ? ""
-                            : `<p><strong>ALERT:</strong> Please return book and paid faines ${book.fines_value}`
-                        }</p>
-
-                        <button class="return-btn" data-bookid="${
-                          book.book_id
-                        }">Return</button>
+                        <button class="return-btn" data-bookid="${book.book_id}">Return</button>
                     `;
 
           borrowedBooksList.appendChild(bookItem);

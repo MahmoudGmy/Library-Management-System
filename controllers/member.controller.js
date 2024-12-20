@@ -202,6 +202,45 @@ const ReturnBook = async (req, res) => {
   }
 };
 
+// addfines
+// const addFines = async (req, res) => {
+//   try {
+//     const result = await members.addfine(req);
+//     console.log("result", result);
+
+//     if (result) {
+//       res.json({ status: Status.SUCCESS, message: "Fines added successfully" });
+//     } else {
+//       res.json({ status: Status.FAIL, message: "Cannot add fines" });
+//     }
+//   } catch (e) {
+//     res.status(500).json({ status: Status.ERROR, message: e.message });
+//   }
+// };
+
+
+const addFines = async (req, res) => {
+  try {
+    console.log("Request Body:", req.body); // Log request data for debugging
+    const updatedFine = await members.addfine(req);
+    if (updatedFine) {
+      res
+        .status(200)
+        .json({
+          message: "Fine added successfully.",
+          fines_value: updatedFine.fines_value,
+        });
+    } else {
+      res.status(400).json({ message: "Failed to add fine." });
+    }
+  } catch (error) {
+    console.error("Error adding fine:", error); // Log error details
+    res.status(500).json({ message: "Internal server error.", error });
+  }
+};
+//==========================================================================================
+
+
 module.exports = {
   signup,
   login,
@@ -211,4 +250,5 @@ module.exports = {
   getBorrowedBooksCount,
   getAllborrowedBooks,
   ReturnBook,
+  addFines,
 };
