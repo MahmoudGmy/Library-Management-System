@@ -89,31 +89,6 @@ const signup = async (req, res) => {
   }
 };
 
-// const blacklist = new Set();
-
-// const logout = async (req, res) => {
-//     try {
-//         const token = req.headers.authorization?.split(' ')[1];
-//         if (!token) {
-//             return res.status(400).json({ status: Status.ERROR, message: "Token not provided" });
-//         }
-
-//         blacklist.add(token);
-
-//         res.status(200).json({ status: Status.SUCCESS, message: "Logged out successfully" });
-//     } catch (e) {
-//         res.status(500).json({ status: Status.ERROR, message: e.message });
-//     }
-// };
-
-// const validateToken = (req, res, next) => {
-//     const token = req.headers.authorization?.split(' ')[1];
-//     if (blacklist.has(token)) {
-//         return res.status(401).json({ status: Status.ERROR, message: "Invalid or expired token" });
-//     }
-
-//     next();
-// };
 
 const deleteUser = async (req, res) => {
   try {
@@ -121,10 +96,7 @@ const deleteUser = async (req, res) => {
 
     await members.deletemember(email);
 
-    // if (result.affectedRows === 0) {
-
-    //     return res.status(404).json({ status: Status.FAIL, message: "User not found" });
-    // }
+   
 
     res
       .status(200)
@@ -202,21 +174,7 @@ const ReturnBook = async (req, res) => {
   }
 };
 
-// addfines
-// const addFines = async (req, res) => {
-//   try {
-//     const result = await members.addfine(req);
-//     console.log("result", result);
 
-//     if (result) {
-//       res.json({ status: Status.SUCCESS, message: "Fines added successfully" });
-//     } else {
-//       res.json({ status: Status.FAIL, message: "Cannot add fines" });
-//     }
-//   } catch (e) {
-//     res.status(500).json({ status: Status.ERROR, message: e.message });
-//   }
-// };
 
 
 const addFines = async (req, res) => {
@@ -244,7 +202,6 @@ const addFines = async (req, res) => {
 module.exports = {
   signup,
   login,
-  // logout,
   deleteUser,
   getAllMember,
   getBorrowedBooksCount,

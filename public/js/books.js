@@ -31,31 +31,38 @@ function displayBooks() {
     const booksGrid = document.getElementById('booksGrid');
     if (!booksGrid) return;
 
- 
     if (!Array.isArray(Books)) {
         console.error("Books is not an array:", Books);
         return;
     }
 
-    booksGrid.innerHTML = Books.map(book => `
+    booksGrid.innerHTML = Books.map(
+      (book) => `
         <div class="book-card">
-    
-            <img src="../imag/${book.image}" alt="${book.title}" class="book-image">
+            <img src="../imag/${book.image}" alt="${
+        book.title
+      }" class="book-image">
             <div class="book-info">
-
                 <h3 class="book-title">${book.title}</h3>
-               
                 <p class="book-author">By ${book.author}</p>
                 <p class="book-category">Category: ${book.category}</p>
                 <p class="book-description">${book.description_of_book}</p>
                 <div class="book-footer">
-                    <button class="borrow-btn" onclick="borrowBook('${book.book_id}')">Borrow</button>
-                      ${isAdmin ? `<button class="delete-btn" onclick="deleteBook('${book.book_id}')">Delete</button>` : ''}
+                                   
+
+                      ${
+                        !isAdmin
+                          ? `                    <button class="borrow-btn" onclick="borrowBook('${book.book_id}')">Borrow</button>
+`
+                          : ""
+                      }
                 </div>
             </div>
         </div>
-    `).join('');
+    `
+    ).join("");
 }
+
 
 async function borrowBook(bookId) {
   const token = localStorage.getItem("token"); // Ensure token is correctly fetched

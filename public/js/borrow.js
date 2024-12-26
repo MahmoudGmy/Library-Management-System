@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                             : `<p><strong>ALERT:</strong> Please return book and paid faines ${book.fines_value}`
                         }</p>
 
-                        <button class="return-btn" data-bookid="${
+                        <button onclick="location.reload();" class="return-btn" data-bookid="${
                           book.book_id
                         }">Return</button>
                     `;

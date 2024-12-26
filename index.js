@@ -16,7 +16,7 @@ const memberController = require('./controllers/member.controller')
 
 
 const corsOptions = {
-    origin: 'http://localhost:3000', 
+    origin: 'http://localhost:8000', 
     methods: ['GET', 'POST', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
@@ -28,7 +28,7 @@ app.use('/api/auth',memberRouter)
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.delete('/api/users/:Id',verifyToken,memberController.deleteUser)
+// app.delete('/api/users/:Id',verifyToken,memberController.deleteUser)
 app.use(express.static(path.join(__dirname, 'public')));
 
 

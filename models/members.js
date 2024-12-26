@@ -48,11 +48,7 @@ const getMemberById = async (id) => {
 
 const deletemember = async (email) => {
   try {
-    //         -- Step 1: Delete all records in the 'borrow' table related to the member
-    // DELETE FROM borrow WHERE member_id = (SELECT member_id FROM members WHERE email = 'mahmoufd@gmail.com');
 
-    // -- Step 2: Delete the member from the 'members' table
-    // DELETE FROM members WHERE email = 'mahmoufd@gmail.com';
 
     await connection.query(
       "DELETE FROM borrow WHERE member_id = (SELECT member_id FROM members WHERE email = ?)",
@@ -129,26 +125,7 @@ const returnBook = async (req) => {
   }
 
   try {
-    // Step 1: Fetch the current count for the book
-    // const [rows] = await connection.query(
-    //     'SELECT count FROM book WHERE book_id = ?',
-    //     [book_id]
-    // );
-
-    // // Check if the book exists
-    // if (rows.length === 0) {
-    //     console.log('Book not found');
-    //     return { success: false, message: 'Book not found' };
-    // }
-
-    // let currentCount = rows[0].count;
-    // const newCount = currentCount + 1;
-
-    // // Step 2: Update the count
-    // await connection.query(
-    //     'UPDATE book SET count = ? WHERE book_id = ?',
-    //     [newCount, book_id]
-    // );
+ 
 
     // Step 3: Delete the borrow record
     const [deleteResult] = await connection.query(
@@ -161,8 +138,12 @@ const returnBook = async (req) => {
       return { success: false, message: "No borrow record found" };
     }
 
-    // console.log(`Book ID ${book_id} count updated to ${newCount}`);
-    // return { success: true, message: 'Book returned successfully' };
+    // updaate count ++ after return book
+    await connection.query(
+      `update book set count = (count+1) where book_id = ?`,
+      [book_id]
+    );
+
     return true;
   } catch (e) {
     console.error("Cannot return Book", e);
@@ -170,31 +151,7 @@ const returnBook = async (req) => {
   }
 };
 
-// Add fines to a user and book
-// const addfine = async (req) => {
-//   const { fine_amount } = req.body; // Fine amount from the body
-//   const { userId, book_id } = req.params; // UserId and book_id from the URL params
 
-//   console.log("Fine Amount:", fine_amount);
-//   console.log("User ID:", userId);
-//   console.log("Book ID:", book_id);
-
-//   try {
-//     const [result] = await connection.query(
-//       `UPDATE borrow SET fines_value = ? WHERE member_id = ? AND book_id = ?`,
-//       [fine_amount, userId, book_id] // Binding the values to the query
-//     );
-
-//     if (result.affectedRows > 0) {
-//       return true; // Return true if the update is successful
-//     } else {
-//       return false; // No rows affected, so return false
-//     }
-//   } catch (e) {
-//     console.log("Error:", e);
-//     throw e; // Throw the error if something goes wrong
-//   }
-// };
 
 const addfine = async (req) => {
   const { fine_amount } = req.body; // Fine amount from the body

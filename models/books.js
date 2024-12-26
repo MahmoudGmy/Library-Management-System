@@ -32,10 +32,7 @@ const addNewBook = async (req) => {
     console.log("Request Body:", req.body);
     const { title, count, author, category, description, image } = req.body;
 
-    // Validate incoming data
-    // if (!title || !count || !author || !category || !description ||!image ) {
-    //     throw new Error("All fields are required");
-    // }
+  
 
     // Perform the insert query
     const [result] = await connection.query(
@@ -98,18 +95,7 @@ const borrow = async (req, res) => {
   returnDate.setDate(borrowDate.getDate() + 7);
 
   try {
-    // Start the transaction
-    // await connection.beginTransaction();
 
-    // // Check if the book is already borrowed by this member and not yet returned
-    // const [existingBorrow] = await connection.query(
-    //   `SELECT * FROM borrow WHERE book_id = ? AND member_id = ? AND return_date IS not NULL`,
-    //   [book_id, member_id]
-    // );
-
-    // if (existingBorrow.length > 0) {
-    //   throw new Error("Book is already borrowed and not yet returned.");
-    // }
 
     // Proceed with borrowing the book
     const [result] = await connection.query(
@@ -124,28 +110,14 @@ const borrow = async (req, res) => {
       ]
     );
 
-    // Fetch current count of the book
-    // const [book] = await connection.query(
-    //   `SELECT count FROM book WHERE book_id = ?`,
-    //   [book_id]
-    // );
 
-    // if (!book.length) throw new Error("Book not found");
-    // const currentCount = book[0].count;
-
-    // if (currentCount > 0) {
-    //   await connection.query(`UPDATE book SET count = ? WHERE book_id = ?`, [
-    //     currentCount - 1,
-    //     book_id,
-    //   ]);
-    // } else {
-    //   throw new Error("Book is out of stock");
-    // }
-
-    // Commit the transaction
-    // await connection.commit();
 
     // Return borrow details
+    await connection.query(
+      `update book set count = (count-1) where book_id = ?`,
+      [book_id]
+    );
+  
     const [borrowBook] = await connection.query(
       `SELECT b.borrow_id, m.name_member, b.borrow_date, b.return_date, bk.title AS book_title
             FROM borrow b
