@@ -41,6 +41,8 @@ The Library Management System is a robust and user-friendly software application
 
 ![](images/PROFILE.png)
 
+--- 
+
 ### Admin functionality
 
 **THE ADMIN CONTROL PANAL PAGE (ADMIN SEE AL USER AND BORROWED USER BOOK AND CAN ADD FINES FOR EACH BOOK)**:
@@ -50,6 +52,8 @@ The Library Management System is a robust and user-friendly software application
 **THE ADMIN PAGE (ONLY ADMIN CAN ADD BOOK)**:
 
 ![](images/ADMIN.png)
+
+---
 
 ```
 Library-Management-System/
