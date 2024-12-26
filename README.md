@@ -19,6 +19,20 @@ The Library Management System is a robust and user-friendly software application
 - **Backend**: Node.js with Express
 - **Database**: MySQL
 
+## Database Design 
+
+### ERD
+
+![](images/ERD.png)
+
+---
+
+### Mapping
+
+![](images/mapping.png)
+
+---
+
 ## Screenshot
 
 ### User functionality
