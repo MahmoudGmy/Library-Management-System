@@ -51,53 +51,54 @@ The Library Management System is a robust and user-friendly software application
 
 ![](images/ADMIN.png)
 
-
-
+```
 Library-Management-System/
 │
-├── config/ # Configuration files for the project
-│ 
+├── config/                    # Configuration files for the project\
+│   └── db.config.js            # Database configuration
+│   └── app.config.js           # General application configuration
 │
-├── controllers/ # Controllers handle the business logic
-│ ├── books.controller.js # Logic for managing books
-│ └── member.controller.js # Logic for managing members
+├── controllers/                # Controllers handle business logic
+│   ├── books.controller.js     # Logic for managing books
+│   └── members.controller.js   # Logic for managing members
 │
-├── middlewares/ # Middleware for request validation and authorization
-│ ├── allowTO.js # Middleware for role-based access control
-│ └── verifyToken.js # Middleware for verifying JWT tokens
+├── middlewares/                # Middleware for request validation and authorization
+│   ├── allowTo.js              # Middleware for role-based access control
+│   └── verifyToken.js          # Middleware for verifying JWT tokens
 │
-├── models/ # Models define the data structure and schemas
-│ ├── books.js # Book schema/model
-│ └── members.js # Member schema/model
+├── models/                     # Models define data structure and schemas
+│   ├── books.model.js          # Book schema/model
+│   └── members.model.js        # Member schema/model
 │
-├── node_modules/ # Dependencies installed via npm (auto-managed)
-│ └── ...
+├── public/                     # Frontend static assets
+│   ├── css/                    # Stylesheets
+│   ├── js/                     # Frontend JavaScript
+│   ├── images/                 # Images and other static assets
+│   ├── admin_control.html  # Admin control panel
+│   ├── admin.html          # Admin dashboard
+│   ├── borrows.html        # Borrow/return books page
+│   ├── index.html          # Homepage
+│   ├── login.html          # Login page
+│   ├── members.html        # Members list page
+│   ├── profile.html        # User/member profile page
+│   └── register.html       # Registration page
 │
-├── public/ # Frontend assets (static files)
-│ ├── css/ # Stylesheets
-│ ├── js/ # Frontend JavaScript
-│ └── imag/ # Images and other assets
+├── routes/                     # API route definitions
+│   ├── books.routes.js         # Routes for books-related API
+│   └── members.routes.js       # Routes for member-related API
 │
-├── routes/ # API route definitions
-│ ├── books.route.js # Routes for books-related API
-│ └── member.route.js # Routes for member-related API
+├── services/                   # Business logic and reusable service layers
+│   ├── auth.service.js         # Authentication and authorization logic
+│   ├── books.service.js        # Book management logic
+│   └── members.service.js      # Member management logic
 │
-├── utils/ # Utility functions or helper modules
-│ ├── generateJWT.js # Helper for generating JWT tokens
-│ └── Status.js # Utility for handling statuses
+├── utils/                      # Utility functions or helper modules
+│   ├── generateJWT.js          # Helper for generating JWT tokens
+│   └── statusCodes.js          # Utility for handling status codes
 │
-├── views/ # HTML templates for the frontend
-│ ├── admin_control.html # Admin control panel
-│ ├── admin.html # Admin dashboard
-│ ├── borrows.html # Borrow/return books page
-│ ├── index.html # Homepage
-│ ├── login.html # Login page
-│ ├── members.html # Members list page
-│ ├── Profiles.html # User/member profile page
-│ └── register.html # Registration page
-│
-├── .env # Environment variables (e.g., database URL, JWT secret)
-├── .gitignore # Files and directories to ignore in Git
-├── index.js # Main entry point for the application
-├── package-lock.json # Auto-generated dependency tree (npm)
-└── package.json # Project metadata and dependencies
+├── .env                        # Environment variables (e.g., database URL, JWT secret)
+├── .gitignore                  # Files and directories to ignore in Git
+├── index.js                    # Main entry point for the application
+├── package-lock.json           # Auto-generated dependency tree (npm)
+└── package.json                # Project metadata and dependencies
+```
